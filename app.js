@@ -45,8 +45,11 @@ let allTodos = [
   }
 
   function renderTodos(){
+    $('main .content').empty();
+
     allTodos.forEach(function(todo){
        let newElement = createElementFromTodo(todo);
+
         if ( todo.isComplete ){
         $('.completed-todos').append(newElement);
      }else {
@@ -55,11 +58,54 @@ let allTodos = [
     })
   }
 
+
+
 $('.left-drawer').click(function(){
     if ( $(this).hasClass('left-drawer') ) {
+
         $('#app').toggleClass('drawer-open');
       };
 })
+
+$('.add-todo').click(function() {
+  $('.modal').addClass('open');
+})
+
+
+
+$('.create-todo').click(function(event){
+  $('.todo-form').preventDefault();
+  
+  let newForm = createTodoFromForm();
+
+  allTodos.unshift(newForm);
+
+  $('.todo-form').trigger('reset');
+
+  $('.modal').removeClass('open');
+
+  renderTodos();
+})
+
+
+
+$('.cancel-create-todo').click(function(event){
+  $('.modal').removeClass('open');
+})
+
+
+function createTodoFromForm(){
+  let newTodo = {
+    title: $('#todo-title').val(),
+    description: $('#todo-description').val(),
+    dueDate: $('#todo-due-date').val() ,
+    isComplete: false
+  }
+ return newTodo
+}
+
+
+
 
 
 renderTodos();
