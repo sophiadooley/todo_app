@@ -74,13 +74,15 @@ $('.add-todo').click(function() {
 
 
 $('.create-todo').click(function(event){
-  $('.todo-form').preventDefault();
+  event.preventDefault();
   
-  let newForm = createTodoFromForm();
+  let newForm = $('.todo-form');
 
-  allTodos.unshift(newForm);
+  todoObject = createTodoFromForm(newForm);
 
-  $('.todo-form').trigger('reset');
+  allTodos.unshift(todoObject);
+
+  newForm.trigger('reset');
 
   $('.modal').removeClass('open');
 
@@ -101,11 +103,20 @@ function createTodoFromForm(){
     dueDate: $('#todo-due-date').val() ,
     isComplete: false
   }
- return newTodo
+  todoElement.data("todo", todo);
+
+ return newTodo;
 }
 
+$('main').on('click', '.action.complete', function () {
+    let closeToDo = $(this).closest('.todo');
 
+    closeToDo.data('todo', todo).isComplete(true);
 
+    todoElement.slideUp(function () {
+      renderTodos();
+});
+})
 
 
 renderTodos();
