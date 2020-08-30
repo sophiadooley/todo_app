@@ -100,9 +100,9 @@ $('.create-todo').click(function(event){
 
   $('.modal').removeClass('open');
 
-  storeData();
-  splitTodos();
-  renderTodos();
+
+
+  finalUpdate();
 })
 
 
@@ -130,14 +130,33 @@ $('main').on('click', '.action.complete', function () {
 
     
     closeToDo.slideUp(function () {
-      storeData();
-      splitTodos();
-      renderTodos()
+      finalUpdate();
     });
 })
 
+$('main').on('click', '.action.delete', function () {
+  let closeToDo = $(this).closest('.todo');
+
+  let item = closeToDo.data('todo');
+
+  allTodos.splice(allTodos.indexOf(item), 1); 
+
+  finalUpdate();
+})
 
 
+$('main').on('click', '.remove-completed', function () {
+  allTodos.filter(function(){
+    return allTodos.isComplete = true;
+  })
+})
+
+
+$('main').on('click', '.remove-expired', function () {
+   allTodos.filter(function(){
+    return allTodos.isCurrent = false;
+  })
+})
 
 
 
@@ -169,6 +188,12 @@ function storeData(){
 
 function retrieveData(){
   allTodos = JSON.parse(localStorage.getItem('allTodos')) || fetchDefaultTodos();
+}
+
+function finalUpdate(){
+  storeData();
+  splitTodos();
+  renderTodos();
 }
 
 function fetchDefaultTodos(todo){
